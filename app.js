@@ -26,7 +26,7 @@ const path = require('path');
 const { environment } = require('./config');
 
 // Use our routes
-// const routes = require('./routes');
+const routes = require('./routes');
 
 // Initialize our server
 const app = express();
@@ -61,7 +61,7 @@ app.use(cookieParser());
 app.use(helmet({ contentSecurityPolicy: false }));
 
 // Set up our server routes
-// app.use(routes);
+app.use(routes);
 
 // Serve React Application
 // This should come after routes, but before 404 and error handling.

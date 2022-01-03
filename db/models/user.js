@@ -9,14 +9,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-        validates: {
+        validate: {
           len: [1, 255],
         },
       },
       hashed_password: {
         type: DataTypes.STRING.BINARY,
         allowNull: false,
-        validates: {
+        validate: {
           len: [60, 60],
         },
       },
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-        validates: {
+        validate: {
           isEmail: true,
           len: [3, 255],
         },
