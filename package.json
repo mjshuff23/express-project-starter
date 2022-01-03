@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -19,6 +20,9 @@
     "http-errors": "^2.0.0",
     "morgan": "^1.10.0",
     "pg": "^8.7.1",
-    "sequelize": "^7.0.0-alpha.4"
+    "sequelize": "^5.21.7"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^5.5.1"
   }
 }
