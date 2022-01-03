@@ -28,9 +28,6 @@ const { environment } = require('./config');
 // Use our routes
 // const routes = require('./routes');
 
-// Initialize our environment variables from our .env file
-require('dotenv').config();
-
 // Initialize our server
 const app = express();
 
@@ -63,6 +60,7 @@ app.use(cookieParser());
 // - This disables the `contentSecurityPolicy` middleware but keeps the rest.
 app.use(helmet({ contentSecurityPolicy: false }));
 
+// Set up our server routes
 // app.use(routes);
 
 // Serve React Application

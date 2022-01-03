@@ -1,7 +1,12 @@
 #!/usr/bin/env node
+
+// Initialize our environment variables from our .env file
 require('dotenv').config();
+
+// Grab our port from our config file or use 8080 by default
 const { port } = require('../config') || 8080;
 
+// Import our app and db
 const app = require('../app');
 const db = require('../db/models');
 
