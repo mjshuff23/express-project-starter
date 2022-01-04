@@ -1,0 +1,4 @@
+.loginForm__invalidEmail, .loginForm__invalidPassword {
+    color: red;
+    display: none;
+}

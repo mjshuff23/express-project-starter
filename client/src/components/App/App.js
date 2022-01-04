@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { loadToken } from '../../store/actions/authentication';
 import { PrivateRoute, ProtectedRoute } from '../../route-utils';
+import NavBar from '../NavBar/NavBar';
+import LoginForm from '../LoginForm/LoginForm';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -15,7 +17,12 @@ function App() {
 
   if (!loaded) return null;
 
-  return <div className='App'>Test</div>;
+  return (
+    <div className='App'>
+      <NavBar />
+      <LoginForm />
+    </div>
+  );
 }
 
 const AppContainer = () => {
