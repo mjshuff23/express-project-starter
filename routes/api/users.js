@@ -124,10 +124,9 @@ router.post(
     // Grab required user data
     const { username, email, password } = req.body;
     // Hash user's password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create user
-    const user = await User.create({ username, email, hashedPassword });
+    const hashed_password = bcrypt.hashSync(password, 10);
+    // Create user.  Property names must match the actual column name
+    const user = await User.create({ username, email, hashed_password });
 
     // Get user token
     const token = getUserToken(user);
@@ -139,32 +138,32 @@ router.post(
   })
 );
 
-router.post(
-  '/token',
-  validateEmailAndPassword,
-  asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({
-      where: {
-        email,
-      },
-    });
+// router.post(
+//   '/token',
+//   validateEmailAndPassword,
+//   asyncHandler(async (req, res, next) => {
+//     const { email, password } = req.body;
+//     const user = await User.findOne({
+//       where: {
+//         email,
+//       },
+//     });
 
-    if (!user || !user.validatePassword(password)) {
-      const err = new Error('Login failed');
-      err.status = 401;
-      err.title = 'Login failed';
-      err.errors = [
-        'Either the user does not exit or you provided an incorrect password',
-      ];
-      return next(err);
-    }
+//     if (!user || !user.validatePassword(password)) {
+//       const err = new Error('Login failed');
+//       err.status = 401;
+//       err.title = 'Login failed';
+//       err.errors = [
+//         'Either the user does not exit or you provided an incorrect password',
+//       ];
+//       return next(err);
+//     }
 
-    const token = getUserToken(user);
-    res.cookie('token', token);
-    res.json({ token, user: { id, username, email } });
-  })
-);
+//     const token = getUserToken(user);
+//     res.cookie('token', token);
+//     res.json({ token, user: { id, username, email } });
+//   })
+// );
 
 // Read all users
 router.get(
