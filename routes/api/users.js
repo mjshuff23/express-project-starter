@@ -1,12 +1,24 @@
 const express = require('express');
+
+// For hashing our passwords
 const bcrypt = require('bcrypt');
+
+// An express.js middleware for validator, a library of string validators and sanitizers.
 const { check } = require('express-validator');
+
+// Bring in our helper functions
 const { asyncHandler, handleValidationErrors } = require('../../utils');
+
+// Bring in our auth helper functions
 const { getUserToken, requireAuth } = require('../../auth');
+
+// Bring in our User model
 const { User } = require('../../db/models');
 
 const router = express.Router();
 
+// Check that the email property exists and that it is a valid email
+// Check that the password exists
 const validateEmailAndPassword = [
   check('email')
     .exists({ checkFalsy: true })
@@ -18,6 +30,7 @@ const validateEmailAndPassword = [
   handleValidationErrors,
 ];
 
+// Check that the username property exists, is less than 50 characters long, and that the username and email are not already in use or invalid
 const validateSignUp = [
   check('username')
     .exists({ checkFalsy: true })
@@ -69,21 +82,32 @@ const validateSignUp = [
 router.post(
   '/login',
   asyncHandler(async (req, res, next) => {
+    // Grab email and password from body
     const { email, password } = req.body;
+    // console.log('Email', email, 'Password', password);
+    // Attempt to find user based on email
     const user = await User.findOne({
       where: {
         email,
       },
+      // If there is no user or the password is wrong
     });
-
-    if (!user || !user.validatePassword(password)) {
+    console.log(password);
+    if (!user || !user.validatePassword(user, password)) {
       const err = new Error('Login failed');
       err.status = 401;
       err.title = 'Login failed';
-      err.errors = ['The provided credentials were invalid.'];
+      err.errors = [
+        'Either the user does not exit or you provided an incorrect password',
+      ];
       return next(err);
     }
+
+    console.log('TEST');
+    // If there is a user, get their token
     const token = getUserToken(user);
+
+    // Send back token and user information
     res.json({
       token,
       user: { id: user.id, email: user.email, username: user.username },
@@ -91,14 +115,21 @@ router.post(
   })
 );
 
+// Sign up
 router.post(
   '/',
   validateSignUp,
+  // Always notice the asyncHandler
   asyncHandler(async (req, res) => {
+    // Grab required user data
     const { username, email, password } = req.body;
+    // Hash user's password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
     const user = await User.create({ username, email, hashedPassword });
 
+    // Get user token
     const token = getUserToken(user);
     res.cookie('token', token);
     res.status(201).json({
@@ -113,7 +144,7 @@ router.post(
   validateEmailAndPassword,
   asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
-    const { id, username } = await User.findOne({
+    const user = await User.findOne({
       where: {
         email,
       },
@@ -123,16 +154,19 @@ router.post(
       const err = new Error('Login failed');
       err.status = 401;
       err.title = 'Login failed';
-      err.errors = ['The provided credential were invalid'];
+      err.errors = [
+        'Either the user does not exit or you provided an incorrect password',
+      ];
       return next(err);
     }
 
     const token = getUserToken(user);
-    res.cook('token', token);
+    res.cookie('token', token);
     res.json({ token, user: { id, username, email } });
   })
 );
 
+// Read all users
 router.get(
   '/',
   requireAuth,
@@ -142,6 +176,7 @@ router.get(
   })
 );
 
+// Read specific user
 router.get(
   '/:id',
   asyncHandler(async (req, res, next) => {

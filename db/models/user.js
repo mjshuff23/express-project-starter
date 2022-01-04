@@ -39,9 +39,10 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
   };
 
-  User.prototype.validatePassword = (password) => {
+  User.prototype.validatePassword = (user, password) => {
     // because this is a model instance method, `this` is the user instance here:
-    return bcrypt.compareSync(password, this.hashed_password.toString());
+    // console.dir(user);
+    return bcrypt.compareSync(password, user.hashed_password.toString());
   };
 
   return User;
