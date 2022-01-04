@@ -34,12 +34,11 @@ function LoginForm() {
     <div className='login-form__container'>
       <h2 className='login-form__header'>Login</h2>
       <form onSubmit={handleSubmit} className='login-form__form'>
-        <label htmlFor='email'>
+        <label htmlFor='email' className='login-form__input'>
           Email:
           <input
             required
             type='email'
-            className='login-form__input'
             placeholder='Email'
             value={email}
             onChange={(event) => {
@@ -48,9 +47,10 @@ function LoginForm() {
           />
         </label>
         <div className='loginForm__invalidEmail'>Invalid Email</div>
-        <label htmlFor='password'>
+        <label htmlFor='password' className='login-form__input'>
+          Password:
           <input
-            className='loginForm__input'
+            required
             type='password'
             placeholder='Password'
             value={password}
@@ -58,9 +58,11 @@ function LoginForm() {
           />
         </label>
         <div className='loginForm__invalidPassword'>Invalid Password</div>
-        <button className='loginForm__button' type='submit'>
-          Login
-        </button>
+        <div className='login-form__button-div'>
+          <button className='loginForm__button' type='submit'>
+            Login
+          </button>
+        </div>
       </form>
     </div>
   );

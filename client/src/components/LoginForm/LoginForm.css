@@ -2,3 +2,41 @@
     color: red;
     display: none;
 }
+
+.login-form__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form__input {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+}
+
+.login-form__input>input {
+    margin-left: 5px
+}
+
+.loginForm__button {
+    margin: 10px 0;
+}
+
+.login-form__button-div {
+    display: flex;
+    justify-content: center;
+}
+
+.login-form__button-div>button {
+    width: 100%
+}
+
+.login-form__header {
+    margin-top: 0;
+}

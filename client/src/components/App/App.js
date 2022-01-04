@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { loadToken } from '../../store/actions/authentication';
 import { PrivateRoute, ProtectedRoute } from '../../route-utils';
 import NavBar from '../NavBar/NavBar';
-import LoginForm from '../LoginForm/LoginForm';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -20,7 +19,6 @@ function App() {
   return (
     <div className='App'>
       <NavBar />
-      <LoginForm />
     </div>
   );
 }
