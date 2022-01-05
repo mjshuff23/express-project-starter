@@ -84,7 +84,7 @@ router.post(
   asyncHandler(async (req, res, next) => {
     // Grab email and password from body
     const { email, password } = req.body;
-    // console.log('Email', email, 'Password', password);
+
     // Attempt to find user based on email
     const user = await User.findOne({
       where: {
@@ -92,7 +92,7 @@ router.post(
       },
       // If there is no user or the password is wrong
     });
-    console.log(password);
+
     if (!user || !user.validatePassword(user, password)) {
       const err = new Error('Login failed');
       err.status = 401;
@@ -103,7 +103,6 @@ router.post(
       return next(err);
     }
 
-    console.log('TEST');
     // If there is a user, get their token
     const token = getUserToken(user);
 
