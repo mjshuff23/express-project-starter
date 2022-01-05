@@ -42,6 +42,7 @@ export const login = (email, password) => async (dispatch) => {
     window.localStorage.setItem('userId', user.id);
     // Set token in Redux store
     dispatch(setToken(token));
+    dispatch(addUser(user));
   } else {
     const { error } = await response.json();
     return error;
@@ -57,17 +58,19 @@ export const logout = () => async (dispatch) => {
 };
 
 export const register =
-  (username, email, password, confirmPassword) => async (dispatch) => {
-    const response = await fetch(`api/users`, {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password, confirmPassword }),
+  (username, email, password, confirmPassword, profile_picture_url) =>
+  async (dispatch) => {
+    const response = await fetch(`${backendUrl}/api/users`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password, confirmPassword, profile_picture_url }),
     });
     if (response.ok) {
       const { token, user } = await response.json();
       window.localStorage.setItem(TOKEN_KEY, token);
-      window.localStorage.setItem('userId', user.id);
+      window.localStorage.setItem("userId", user.id);
       dispatch(setToken(token));
+      dispatch(addUser(user));
     } else {
       const { error } = await response.json();
       return error;

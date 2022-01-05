@@ -1,0 +1,42 @@
+.signupForm__invalidEmail, .signupForm__invalidPassword {
+    color: red;
+    display: none;
+}
+
+.signup-form__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-form__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-form__input {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+}
+
+.signup-form__input>input {
+    margin-left: 5px
+}
+
+.signupForm__button {
+    margin: 10px 0;
+}
+
+.signup-form__button-div {
+    display: flex;
+    justify-content: center;
+}
+
+.signup-form__button-div>button {
+    width: 100%
+}
+
+.signup-form__header {
+    margin-top: 0;
+}
