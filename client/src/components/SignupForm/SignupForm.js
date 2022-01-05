@@ -1,12 +1,13 @@
-import './LoginForm.css';
+import "./SignupForm.css";
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink, Navigate } from 'react-router-dom';
-import { login } from '../../store/actions/authentication';
+import { register } from '../../store/actions/authentication';
 import * as EmailValidator from 'email-validator';
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profilePicURL, setProfilePicURL] = useState("");
@@ -19,7 +20,13 @@ function LoginForm() {
       return alert('Please enter a valid email');
     }
 
-    const error = await dispatch(login(email, password));
+    if (password !== confirmPassword) {
+      return alert('Passwords must match')
+    }
+
+    const error = await dispatch(
+      register(username, email, password,confirmPassword, profilePicURL)
+    );
 
     if (error) return alert(error);
 
@@ -28,18 +35,31 @@ function LoginForm() {
 
   const updateValue = (value, event) => {
     const update = {
-      email: setEmail(event.target.value),
-      password: setPassword(event.target.value),
-      confrimPassword: setConfirmPassword(event.target.value),
-      
+      email: setEmail,
+      password: setPassword,
+      confrimPassword: setConfirmPassword,
+      profilePicURL: setProfilePicURL,
+      username: setUsername,
     };
-      
+    update[value](event.target.value);
   };
 
   return (
     <div className="signup-form__container">
-      <h2 className="signup-form__header">Login</h2>
+      <h2 className="signup-form__header">Signup</h2>
       <form onSubmit={handleSubmit} className="signup-form__form">
+        <label htmlFor="username" className="signup-form__input">
+          Username:
+          <input
+            required
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(event) => {
+              updateValue("username", event);
+            }}
+          />
+        </label>
         <label htmlFor="email" className="signup-form__input">
           Email:
           <input
@@ -53,6 +73,17 @@ function LoginForm() {
           />
         </label>
         <div className="signupForm__invalidEmail">Invalid Email</div>
+        <label htmlFor="url" className="signup-form__input">
+          Profile Pic URL:
+          <input
+            type="url"
+            placeholder="https://yoursite.com/yourpicture.png"
+            value={profilePicURL}
+            onChange={(event) => {
+              updateValue("profilePicURL", event);
+            }}
+          />
+        </label>
         <label htmlFor="password" className="signup-form__input">
           Password:
           <input
@@ -63,7 +94,7 @@ function LoginForm() {
             onChange={(event) => updateValue("password", event)}
           />
         </label>
-        <label htmlFor="password" className="signup-form__input">
+        <label htmlFor="confirmPassword" className="signup-form__input">
           Confirm Password:
           <input
             required
@@ -76,7 +107,7 @@ function LoginForm() {
         <div className="signupForm__invalidPassword">Invalid Password</div>
         <div className="signup-form__button-div">
           <button className="signupForm__button" type="submit">
-            Login
+            Signup
           </button>
         </div>
       </form>

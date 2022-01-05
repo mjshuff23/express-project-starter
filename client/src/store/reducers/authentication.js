@@ -16,7 +16,7 @@ export default function reducer(state = initialState, action) {
     case REMOVE_TOKEN:
       return { ...state, token: '' };
     case ADD_USER:
-      return { ...state, ...action.user };
+      return { ...state, user: { ...action.user } };
     default:
       return state;
   }

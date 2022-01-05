@@ -122,11 +122,16 @@ router.post(
   // Always notice the asyncHandler
   asyncHandler(async (req, res) => {
     // Grab required user data
-    const { username, email, password } = req.body;
+    const { username, email, password, profile_picture_url } = req.body;
     // Hash user's password
     const hashed_password = bcrypt.hashSync(password, 10);
     // Create user.  Property names must match the actual column name
-    const user = await User.create({ username, email, hashed_password });
+    const user = await User.create({
+      username,
+      email,
+      hashed_password,
+      profile_picture_url
+    });
 
     // Get user token
     const token = getUserToken(user);
