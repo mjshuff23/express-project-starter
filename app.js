@@ -10,6 +10,11 @@ const cors = require('cors');
 // Parse Cookie header and populate `req.cookies` with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a secret string, which assigns req.secret so it may be used by other middleware.
 const cookieParser = require('cookie-parser');
 
+// protection middleware.  Requires either a session middleware or  cookie-parser to be initialized first.
+const csrf = require('csurf');
+// setup route middlewares
+const csrfProtection = csrf({ cookie: true });
+
 // Validation Error. Thrown when the sequelize validation has failed. The error contains an errors property, which is an array with 1 or more ValidationErrorItems, one for each validation that failed.
 const { ValidationError } = require('sequelize');
 
