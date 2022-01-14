@@ -18,7 +18,7 @@ const { User } = require('../../db/models');
 const router = express.Router();
 
 // Check that the email property exists and that it is a valid email
-// Check that the password exists
+// Check that the password exists.
 const validateEmailAndPassword = [
   check('email')
     .exists({ checkFalsy: true })
@@ -81,6 +81,7 @@ const validateSignUp = [
 
 router.post(
   '/login',
+  validateEmailAndPassword,
   asyncHandler(async (req, res, next) => {
     // Grab email and password from body
     const { email, password } = req.body;
@@ -129,7 +130,7 @@ router.post(
       username,
       email,
       hashed_password,
-      profile_picture_url
+      profile_picture_url,
     });
 
     // Get user token
