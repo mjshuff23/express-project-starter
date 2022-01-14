@@ -22,42 +22,54 @@ const bearerToken = require('express-bearer-token');
 
 // Create a user token
 const getUserToken = (user) => {
-  // console.log(jwtConfig);
+  // The Payload (first parameter in jwt.sign)
   const userDataForToken = {
     id: user.id,
     email: user.email,
   };
 
-  const token = jwt.sign({ data: userDataForToken }, secret, {
-    expiresIn: parseInt(expiresIn, 10),
-  });
+  const token = jwt.sign(
+    /* Payload (parameter 1)*/
+    { data: userDataForToken },
+    /* Our secret (parameter 2) */
+    secret,
+    /* Additional Options (parameter 3)*/
+    { expiresIn: parseInt(expiresIn, 10) }
+  );
 
   return token;
 };
 
 // Restore a user with a token
 const restoreUser = (req, res, next) => {
+  // Attempt to extract token from req.cookies
   const { token } = req.cookies;
 
   if (!token) {
+    // Set headers and return 401 error
     return res.set('WWW-Authenticate', 'Bearer').status(401).end();
   }
 
+  // jwt.verify takes: 1) token, 2) secret, 3) options, 4) callback
   return jwt.verify(token, secret, null, async (err, jwtPayload) => {
     if (err) {
       err.status = 401;
       return next(err);
     }
 
+    // Grab id from payload
     const { id } = jwtPayload.data;
 
     try {
+      // Attempt to find User
       req.user = await User.findByPk(id);
     } catch (e) {
+      // If and error occurs, clear token from cookies
       res.clearCookie('token');
       return next(e);
     }
 
+    // If no User, clear token cookie and respond with 401 error
     if (!req.user) {
       res.clearCookie('token');
       return res.set('WWW-Authenticate', 'Bearer').status(401).end();
