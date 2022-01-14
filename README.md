@@ -4,12 +4,36 @@ My attempt at formulating an Express starter similar to my App Academy template
 
 ## Backend Setup
 
+### Initialize Project and Repository
+
 1. `npm init -y` to initialize a new package
 2. `git init` to create a new Git repository
 3. `touch .gitignore` to add a `.gitignore` file
    1. Add `node_modules` into this file so we don't upload packages
-4. `touch .sequelizerc` to create a new Sequelize configuration
-5. `touch .env` to create a file for our environment variables
+
+### Setup Database Connection
+
+1. `touch .sequelizerc` to create a new Sequelize configuration
+
+   ```javascript
+   const path = require('path');
+
+   module.exports = {
+      config: path.resolve('config', 'database.js'),
+      'models-path': path.resolve('db', 'models'),
+      'seeders-path': path.resolve('db', 'seeders'),
+      'migrations-path': path.resolve('db', 'migrations'),
+   };
+
+   ```
+
+2. `touch .env` to create a file for our environment variables
+3. Add `.env` to the `.gitignore` file so we don't upload our `.env` file to GitHub
+4. In Postgres:
+   1. Create a new `USER`/`ROLE` to administrate your app: 
+      1. `CREATE ROLE **username** WITH ENCRYPTED PASSWORD '**password**';`
+   2. Create a new `DATABASE` for your app and set the owner to be the `ROLE` you created previously: 
+      1. `CREATE DATABASE **database** WITH OWNER **owner**;`
 
 ### Backend Packages
 
