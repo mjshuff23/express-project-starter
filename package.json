@@ -20,7 +20,6 @@
     "express-bearer-token": "^2.4.0",
     "express-html-sanitizer": "^1.0.1",
     "express-validator": "^6.14.0",
-    "faker": "^6.6.6",
     "helmet": "^5.0.0",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
